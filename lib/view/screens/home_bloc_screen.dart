@@ -4,8 +4,8 @@ import 'package:note_app_bloc/bloc/notes/notes_bloc.dart';
 import 'package:note_app_bloc/view/screens/add_screen.dart';
 import 'package:note_app_bloc/view/screens/home_screen.dart';
 
-class TestScreen extends StatelessWidget {
-  const TestScreen({super.key});
+class HomeBlocScreen extends StatelessWidget {
+  const HomeBlocScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +13,17 @@ class TestScreen extends StatelessWidget {
       listener: (BuildContext context, Object? state) {},
       builder: (BuildContext context, state) {
         if (state is NotesStateInAddTaskOrNotes) {
-          return const AddScreen();
-        } else if (state is NotesStateNoteOrTaskAdded) {
+          return const AddScreen(
+            isEdit: false,
+          );
+        } else if (state is NotesStateNoteOrTaskAdded ||
+            state is NotesStateNoteOrTaskdDeleted) {
           return const HomeScreen();
+        } else if (state is NotesStateInEditScreen) {
+          return AddScreen(
+            isEdit: true,
+            note: state.notes,
+          );
         }
         return Container();
       },

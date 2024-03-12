@@ -10,9 +10,11 @@ class AuthEventFieldChange extends AuthEvent {}
 class AuthEventLogIn extends AuthEvent {
   final String email, passowrd;
   final GlobalKey<FormState> formState;
+  final BuildContext context;
 
   AuthEventLogIn(
-    this.formState, {
+    this.formState,
+    this.context, {
     required this.email,
     required this.passowrd,
   });
@@ -20,13 +22,15 @@ class AuthEventLogIn extends AuthEvent {
 
 @immutable
 class AuthEventSignUp extends AuthEvent {
-  final String email, password;
+  final String email, password, firstName, lastName;
   final GlobalKey<FormState> formState;
   final BuildContext context;
 
   AuthEventSignUp(
     this.formState,
-    this.context, {
+    this.context,
+    this.firstName,
+    this.lastName, {
     required this.email,
     required this.password,
   });

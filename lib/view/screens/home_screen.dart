@@ -78,10 +78,12 @@ class HomeScreen extends HookWidget {
         physics: const NeverScrollableScrollPhysics(),
         controller: controller,
         children: const [
-          Center(
-            child: Text('test 1'),
+          TaskOrNoteScreen(
+            type: 'Note',
           ),
-          TaskScreen(),
+          TaskOrNoteScreen(
+            type: 'Task',
+          ),
           Center(
             child: Text('test 2'),
           ),

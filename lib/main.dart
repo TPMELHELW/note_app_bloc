@@ -6,8 +6,8 @@ import 'package:note_app_bloc/bloc/notes/notes_bloc.dart';
 import 'package:note_app_bloc/core/repo/auth_repository.dart';
 import 'package:note_app_bloc/core/repo/home_repository.dart';
 import 'package:note_app_bloc/firebase_options.dart';
-import 'package:note_app_bloc/view/screens/home_screen.dart';
-import 'package:note_app_bloc/view/screens/test_screen.dart';
+import 'package:note_app_bloc/view/screens/auth_bloc_screen.dart';
+import 'package:note_app_bloc/view/screens/home_bloc_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: TestScreen(),
+          home: AuthBlocScreen(),
         ),
       ),
     );

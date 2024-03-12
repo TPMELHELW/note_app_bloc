@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
-  signUp(String email, password) async {
+  signUp(String email, password, firstName, lastName) async {
     try {
       //make an account
       final credential =
@@ -11,6 +12,12 @@ class AuthRepository {
       );
       //send verification link
       await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+
+      //store user data
+      await FirebaseFirestore.instance.collection('users').add({
+        'firstName': firstName,
+        'lastName': lastName,
+      });
       return credential;
     } on FirebaseAuthException catch (e) {
       throw FirebaseAuthException(code: e.code);
@@ -21,9 +28,10 @@ class AuthRepository {
 
   logIn(String email, password) async {
     try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
       if (FirebaseAuth.instance.currentUser!.emailVerified) {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
+        // print('success');
         return credential;
       } else {
         throw FirebaseAuthException(code: 'not-verified');

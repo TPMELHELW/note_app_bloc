@@ -35,8 +35,20 @@ class NotesStateInAddTaskOrNotes extends NotesState {
 }
 
 @immutable
+class NotesStateInEditScreen extends NotesState {
+  final notes;
+  NotesStateInEditScreen(
+      {required super.isLoading, this.notes, super.noteError});
+}
+
+@immutable
 class NotesStateNoteOrTaskAdded extends NotesState {
   NotesStateNoteOrTaskAdded({
     required super.isLoading,
   });
+}
+
+@immutable
+class NotesStateNoteOrTaskdDeleted extends NotesState {
+  NotesStateNoteOrTaskdDeleted({required super.isLoading});
 }

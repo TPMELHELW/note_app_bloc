@@ -11,12 +11,14 @@ class AuthView extends HookWidget {
   final bool isLogin;
   const AuthView({super.key, required this.isLogin});
 
+  static final GlobalKey<FormState> formState = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formState = GlobalKey<FormState>();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    // final mahm = useState(initialData)
+    TextEditingController emailController = useTextEditingController();
+    TextEditingController passwordController = useTextEditingController();
+    TextEditingController firstNameController = useTextEditingController();
+    TextEditingController lastNameController = useTextEditingController();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -37,6 +39,8 @@ class AuthView extends HookWidget {
           height: 10,
         ),
         AuthForm(
+          firstNameController: firstNameController,
+          lastNameController: lastNameController,
           isLogin: isLogin,
           emailController: emailController,
           passwordController: passwordController,
@@ -45,22 +49,29 @@ class AuthView extends HookWidget {
         const AuthTextButton(text: "Forget Passowrd?"),
         AuthButton(
           text: isLogin ? "Login" : "Continued",
-          onPress: () => isLogin
-              ? context.read<AuthBloc>().add(
+          onPress: () {
+            if (isLogin) {
+              context.read<AuthBloc>().add(
                     AuthEventLogIn(
-                      formState,
-                      email: emailController.text,
-                      passowrd: passwordController.text,
-                    ),
-                  )
-              : context.read<AuthBloc>().add(
-                    AuthEventSignUp(
                       formState,
                       context,
                       email: emailController.text,
+                      passowrd: passwordController.text,
+                    ),
+                  );
+            } else {
+              context.read<AuthBloc>().add(
+                    AuthEventSignUp(
+                      formState,
+                      context,
+                      firstNameController.text,
+                      lastNameController.text,
+                      email: emailController.text,
                       password: passwordController.text,
                     ),
-                  ),
+                  );
+            }
+          },
         ),
         const SizedBox(
           height: 15,
@@ -95,12 +106,13 @@ class AuthView extends HookWidget {
               textAlign: TextAlign.center,
             ),
             AuthTextButton(
-                text: isLogin ? 'Registration' : 'Login',
-                onPress: () {
-                  isLogin
-                      ? context.read<AuthBloc>().add(AuthEventGoToSignUp())
-                      : context.read<AuthBloc>().add(AuthEventGoToLogIn());
-                })
+              text: isLogin ? 'Registration' : 'Login',
+              onPress: () {
+                isLogin
+                    ? context.read<AuthBloc>().add(AuthEventGoToSignUp())
+                    : context.read<AuthBloc>().add(AuthEventGoToLogIn());
+              },
+            )
           ],
         )
       ],
